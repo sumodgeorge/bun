@@ -262,6 +262,7 @@ public:
     JSObject* lazyPreloadTestModuleObject() { return m_lazyPreloadTestModuleObject.getInitializedOnMainThread(this); }
 
     JSWeakMap* vmModuleContextMap() { return m_vmModuleContextMap.getInitializedOnMainThread(this); }
+    // JSMap* asyncHooksContext() { return m_asyncHooksContext.getInitializedOnMainThread(this); }
 
     JSC::JSObject* processObject()
     {
@@ -401,6 +402,8 @@ public:
     void* napiInstanceDataFinalizerHint = nullptr;
 
 #include "ZigGeneratedClasses+lazyStructureHeader.h"
+
+    // LazyProperty<JSGlobalObject, JSMap> m_asyncHooksContext;
 
 private:
     void addBuiltinGlobals(JSC::VM&);
