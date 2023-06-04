@@ -3183,13 +3183,19 @@ JSC_DEFINE_CUSTOM_GETTER(functionBuildMessageGetter, (JSGlobalObject * globalObj
 JSC_DEFINE_CUSTOM_GETTER(
     EventSource_getter, (JSGlobalObject * globalObject, EncodedJSValue thisValue, PropertyName property))
 {
-
-    JSValue value = JSValue::decode(thisValue);
     auto& vm = globalObject->vm();
-    JSC::JSObject* thisObject = value.toObject(globalObject);
-
     auto scope = DECLARE_THROW_SCOPE(vm);
+
+    // If "this" is not the Global object, just return undefined
+    // you should not be able to reset the global object's EventSource if you muck around with prototypes
+    if (JSValue::decode(thisValue) != globalObject)
+        return JSValue::deocde(jsUndefined());
+
     JSC::JSFunction* getSourceEvent = JSC::JSFunction::create(vm, eventSourceGetEventSourceCodeGenerator(vm), globalObject);
+    if (UNLIKELY(scope.exception())) {
+        RELEASE_AND_RETURN(scope, JSValue::encode(JSC::jsUndefined()));
+    }
+
     JSC::MarkedArgumentBuffer args;
 
     auto clientData = WebCore::clientData(vm);
@@ -3197,17 +3203,15 @@ JSC_DEFINE_CUSTOM_GETTER(
 
     NakedPtr<JSC::Exception> returnedException = nullptr;
     auto result = JSC::call(globalObject, getSourceEvent, callData, globalObject->globalThis(), args, returnedException);
-    RETURN_IF_EXCEPTION(scope, {});
-    
+
     if (returnedException) {
         throwException(globalObject, scope, returnedException.get());
-        return JSValue::encode(JSC::jsUndefined());
     }
 
     if (result)
-        thisObject->putDirect(vm, property, result, 0);
+        globalObject->putDirect(vm, JSC::Identifier::fromString(vm, "EventSource"_s), result);
 
-    return JSValue::encode(result);
+    RELEASE_AND_RETURN(scope, JSValue::encode(result));
 }
 
 EncodedJSValue GlobalObject::assignToStream(JSValue stream, JSValue controller)
