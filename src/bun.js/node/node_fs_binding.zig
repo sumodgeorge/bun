@@ -237,6 +237,8 @@ pub const NodeJSFS = struct {
         return JSC.Node.Stats.getConstructor(globalThis);
     }
 
+    pub const watch = callSync(.watch);
+
     // Not implemented yet:
     const notimpl = fdatasync;
     pub const opendir = notimpl;

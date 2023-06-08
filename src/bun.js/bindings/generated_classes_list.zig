@@ -34,4 +34,5 @@ pub const Classes = struct {
     pub const BuildArtifact = JSC.API.BuildArtifact;
     pub const BuildMessage = JSC.BuildMessage;
     pub const ResolveMessage = JSC.ResolveMessage;
+    pub const FSWatcher = JSC.Node.FSWatcher.JSObject;
 };
