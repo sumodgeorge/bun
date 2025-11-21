@@ -19,7 +19,7 @@
     "react-dom": "^18.3.1",
     "string-width": "7.1.0",
     "tinycolor2": "^1.6.0",
-    "zx": "^7.2.3"
+    "zx": "^8.1.1"
   },
   "scripts": {
     "ffi": "cd ffi && bun run deps && bun run build && bun run bench",
