@@ -10,9 +10,9 @@
     "bench": "hyperfine --prepare 'rm -rf node_modules' --warmup 1 --runs 3 'bun install' 'pnpm install' 'yarn' 'npm install'"
   },
   "dependencies": {
-    "@remix-run/node": "^1.15.0",
-    "@remix-run/react": "^1.15.0",
-    "@remix-run/serve": "^1.15.0",
+    "@remix-run/node": "^2.17.4",
+    "@remix-run/react": "^2.17.4",
+    "@remix-run/serve": "^2.17.4",
     "isbot": "^3.6.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
